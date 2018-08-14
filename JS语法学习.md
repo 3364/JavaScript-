@@ -1,6 +1,6 @@
 # JavaScrip高级程序设计(第三版)
 ====
-
+# 第一章 JavaScript简介
 # 什么是JavaScript
 
 JS 是一种基于对象和事件驱动的客户端脚本语言，最初设计是为了检验HTML表单输入的正确性，起源于Netscape公司的LiveScript语言。
@@ -15,9 +15,13 @@ Netscape开发了一种语言用于验证。
 完整JS根据
 ECMA+DOM+BOM组成
 
+# 第三章 基本概念
 # JS基本语法
-<script type="text/javascript"></script>
-
+```
+<script type="text/javascript">
+	
+</script>
+```
 语法中，ECMAScript大量借鉴了C及其他C语言的语法
 
 - ECMAScript中的一切都区分大小写。
@@ -401,12 +405,385 @@ var result6 = 5- null;//5
 # 相等操作符 
 >P51
 
+确定两个变量是否相等是编程中的一个非常重要的操作。
+在比较字符串，数值和布尔值的相等性时，问题还比较简单。但在涉及到对象的比较时，问题就变得复杂了。
+ECMAS的解决方案就是提供两组操作符：*相等*和*不相等*—--—先转换再比较，全等和不全等----仅比较而不转换。
+
+## 相等和不相等
+ECMAS中的相等操作符由两个等号`(==)`表示，如果两个操作数相等，则返回true。
+不相等操作符由感叹号后跟等于号`(!=)`表现，如果两个操作数不相等，则返回true。
+
+在转换不同的数据类型时，相等和不相等操作符遵循下列基本规则：
+- 如果一个操作符是布尔值，则比较相等性之前先将其转换为数值——false转换为0，而true转换为1；
+- 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值；
+- 如果是个操作数是对象，另一个操作数不是，则调用valueOf()方法，用得到的基本类型值按照前面的规则进行比较
+
+- null和underfined是相等的
+- 要比较相等性之前，不能将null和undefined转换成其他任何值。
+- 如果一个操作数是NaN，则相等操作符返回false，而不相等操作符返回true。
+	即使两个操作数都是NaN，相等操作符也返回false;因为按照规则，NaN不等于NaN。
+- 如果两个操作数都是对象，则比较它们是不是同一个对象。如果两个操作数都指向同一个对象，则相等操作符返回true；否则，返回false。
+
+## 全等和不全等
+>P52 <br>
+全等操作符由3个等于号`===`表示，它只在两个操作符未经转换就相等的情况下返回true：
+` var result1=("55"==55);//true,因为转换后相等`
+` var result2=("55"===55);//false,因为数据类型不相等`
+
+不全等操作符由一个叹号后跟两个等于号`(!==)`表示
+` var result1=("55"!=55);//false,因为转换后相等`
+` var result2=("55"!==55);//true,因为数据类型不相等`
+
+## 条件操作符
+>p53 <br>
+
+条件操作符算ECMAS中最灵活的一种操作符
+`variable=boolean_expression?true_value:false_value;`
+这行代码的含义就是基于对`boolean_expression`求值的结果，决定给变量`variable`赋什么值。如果求值结果为true，则为变量`variable`赋`true_value`值；
+
+`var max=(num1 >num2)?num1:num2;`
+
+在这个例子中，如果num1大于num2，则将num1的值赋给max；如果num1小于或等于num2，则num2的值赋给max。
+
+## 赋值操作值
+>p53 <br>
+
+简单的赋值操作符由等于号`=`表示，其作用就是把右侧的值赋给左侧的变量：
+` var num = 10;`
+
+如果等于号前面再添加乘性操作符、加性操作符或位操作符，就可以完全复合赋值操作。这种符合赋值操作相当于如下的简写：
+
+`var num = 10;`
+`num = num + 10;`
+`num +=10;`
+
+## 逗号操作符
+>p54 <br>
+使用逗号操作符可以在一句语句中执行多个操作，如下面：
+` var num1=1,num2=2,num3=3;`
+
+逗号操作符多用于声明多个变量；但除此之外，逗号操作还可以用于赋值。
+`var num=(5,1,4,8,0);//num的值为0`
+由于0是表达式中的最后一项，因此num的值就是0.
+
+这种赋值的方式比较少见
+
+# 语句
+>p54 <br>
+
+## if语句
+`if(condition) {statement1} else {statement2}`
+
+例如：
+```
+if(i>25){
+	alert("Greater than 25.")
+};
+else
+{
+	alert("Less than or equal to 25.");
+}
+```
+
+## do-while语句
+
+do-while语句是一种后测试循环语句，即只有在循环体重的代码执行之后，才会测试出口条件。换句话说，在对条件表达式求值之前，循环体内的代码至少会被执行一次。
+```
+语法：
+	do{
+		statement
+}	while(expression);
+```
+```
+var i=0;
+do{
+	i+=2;
+}while(i<10);
+alert(i);
+```
+
+## while语句
+while语句属于前测试循环语句，也就是循环体内的代码有可能永远不会被执行。
+
+`while(expression){statement};`
+示例
+```
+var i=0;
+while(i<10){
+	i+=2;
+}
+```
+
+## for语句
+for语句也是一种前测试循环语句，但它具有执行循环之前初始化变量和定义循环后要执行的代码的能力。
+`for(initialization;expression;post-loop-expression)statement`
+例子
+`var count=10;`
+`for(var i=0; i<count;i++){`
+`	alert(i);`
+`}`
+
+这个for循环语句与下面的while语句的功能相同：
+
+`var count=10;`
+`var i=0;`
+`while(i<count){`
+`	alert(i);`
+`	i++;`
+`}`
+
+使用while循环做不到的，使用for循环同样也做不得。也就是说，for循环只是把循环有关的代码集中在了一个位置。
+有必要指出的是，在for循环的变量初始化表达式中，也可以不适用var关键字。
+```
+var count=10;
+var i'
+for (i=0;i<count;i++){
+	alert(i);
+}
+```
+
+循环外部可以访问到循环内部的i
+
+for循环初始化的状态是一个无限循环
+for(;;){
+	doSomething();
+}
+
+for语句存在极大的灵活性，也是ECMAS中最常用的一个语句
+
+## for-in语句
+>P57 <br>
+for-in语句是一种精准的迭代语句，可以用来枚举对象的属性。
+`for (property in expression) statement`
+下面是一个示例：
+
+```
+for （var propName in window){
+	document.write(propName);
+}
+```
+在这个例子中，我们使用for-in 循环来显示BOM中window对象的所有属性。
+每次执行循环时，都会将window对象中存在的一个属性名复制给变量propName。
+这个过程会一直持续到对象中的所有属性都被枚举一遍为止。
+与for语句类似，这里控制语句中的var操作符也不是必需的。
+
+## label语句
+使用label语句可以在代码中添加标签，以便将来使用。
+label语句的语法：
+`label:statement`
+
+示例：
+```
+start:for(var i=0; i<count; i++){
+	alert(i);
+}
+```
+这里用start标签定可以在将来由break或continue语句中引用。加标签的语句一般都与for语句等循环语句配合使用
+
+## break和continue语句
+
+break和continue语句用于在循环中精确控制代码的执行。
+break语句会立即退出循环，强制执行循环后面的语句。
+continue语句虽然也是立即退出循环，但退出循环后会从循环的顶部继续执行。
+
+```
+var num=0;
+
+for (var i=1;i<10;i++){
+	if(i%5==0){
+		break;
+	}
+	num++;
+}
+alert(num);//4
+```
+在这个例子中，i由1递增至10。在循环体内，有一个if语句检查i的值是否可以被5整除。如果是，则执行break语句退出循环。
+另一方面，变量num从0开始，用于记录循环的次数。
+在执行break语句之后，要执行下一行代码是alert函数，结果显示4.也就是说，在变量i等于5时，循环总共执行了4次；
+因为break语句的执行，导致了循环在num再次递增之前就退出了。
+如果这里将break换成continue的话，就是另外一个情况：
+
+```
+var num=0;
+for (var i=1;i<10;i++){
+	if(i%5==0){
+		continue;
+	}
+	num++;
+}
+alert(num);//8
+```
+这里显示为8，说明执行了8次循环。当i等于5时，循环会在num再次递增之前退出。但是会接下来执行下一次循环，即i的值等于6的循环。于是循环继续，直到i等于10时自然介绍。而num的最终值之所以为8是因为continue语句导致少了一次。
+
+break与continue的语句都可以与label语句联合使用，从而返回代码中特定的位置。这种联合使用的情况多发生在循环嵌套中，例如：
+```
+var num=0;
+
+outermost:
+for(var i=0;i<10;i++){
+	for(var j=0;j<10;j++){
+		if(i==5 && j==5){
+			break outermost;
+		}
+		num++;
+	}
+}
+alert(num);//55
+```
+如果每个循环正常执行10次，则num++语句会正常执行100次。
+内部循环break语句带了一个参数，**添加这个标签的结果将导致break语句不仅会退出内部的for循环，也会退出外部的for循环。**为此，当i和j都等于5时，num的值正好是55.
+
+```
+var num=0;
+
+outermost:
+for(var i=0;i<10;i++){
+	for(var j=0;j<10;j++){
+		if(i==5 && j==5){
+			continue outermost;
+		}
+		num++;
+	}
+}
+alert(num);//95
+```
+**continue语句会强制继续执行，退出内部循环，但是执行外部循环。**也就是失去了当j是5后面的5次。
 
 
+## with语句
+>P60 <br>
+with语句的作用是将代码段额作用域设置在一个特定的对象中。with语句的语法如下：
+`with(expression)statement;`
+
+定义with语句的目的主要是为了简化多次编写同一个对象的工作。
+```
+var qs=location.search.substring(1);
+var hostName =location.hostname;
+var url=location.href;
+```
+
+上面几行代码都包含了location的对象，如果使用with语句的话可以改写成：
+```
+with(location){
+	var qs =search.substring(1);
+	var hostName=hostname;
+	var url=href;
+}
+```
+使用with语句关联了location对象。这意味着在with语句的代码快内部，每个变量首先被认为是一个局部变量。
+大量使用with会导致性能下降，也会给调试带来麻烦。
+**不建议使用with**
+
+## switch语句
+>P60 <br>
+switch语句与if语句的关系最为密切，而且也是在其他语言中普遍使用的一种流控制语句。
+```
+switch(expression){
+	case value:statement
+		break;
+	case value:statement
+		break;
+	case value:statement
+		break;
+	default:statement
+}
+
+```
+switch语句中的每一种情形的含义是：如果表达式等于这个值(value)，则执行后面的语句（statement）。而break的关键字会导致代码执行留跳出该语句。如果省略break关键字，会导致执行完当前case后，继续执行下一个case。最后的default关键字用于子啊表达式不匹配前面任何一种情形的时候，执行机动代码。
+
+这是为了让开发不会写类似
+```
+if(i==25){
+	alert("25");
+} else if(i==35){
+	alert("35");
+} else if(i==45){
+	alert("45");
+} else {
+	alert("Other");
+}
+```
+
+而是写出等价的switch语句：
+```
+switch(i){
+	case 25:
+	alert("25");
+	break;
+	case 35:
+	alert("35");
+	break;
+	case 45:
+	alert("45");
+	break;
+	default:
+	alert("Other");
+}
+```
+**switch 语句的比较采用的是全等操作符，因此不会发生类型转移。**
+
+## 函数 
+>P62 <br>
+函数是核心的概念，通过函数可以封装任意多条语句，而且可以在任何地方，任何时候调用执行。ECMAS中的函数使用function关键字来声明，后跟一组参数以及函数体。
+基本语法如下所示：
+
+```
+function functionName(arg,arg1,...,argN){
+	statements
+}
+```
+实例：
+```
+funciton sayHi(name,message){
+	alert("Hello"+ name +","+message);
+}
+```
+这个函数可以通过函数名来调用，后面还加上了一堆圆括号和参数。调用sayHi()函数的代码如下所示：
+`sayHi("Nicolas","how are you today?");`
+
+任何函数在任何时候都可以通过return语句后跟着返回值来实现返回。
+`function sum(num1,num2){
+	return num1+num2;
+}
+`
+这个sum()翻书的作用是将两个值相加。除了return语句外没有任何声明表示该函数会返回一个值。
+调用该函数如下
+`var result=sum(5,10);`
+
+**当执行完return语句之后停止并立即退出，也就是位于return后面的任何代码都将永远不会执行**
+
+return语句也可以不带任何返回值。但是这样的情况下函数将会返回undefined。
+
+**推荐的做法是让函数始终有一个返回值，要么永远都不要返回值。否则如果函数有时候返回，有时候不返还，会给调试代码很不方便**
+
+## 理解参数 
+>P65 <br>
+ECMAS中命名参数只提供便利，但不是必须。对于传入的多个元素会以arguments对象来访问这个参数组，从而获取传递给函数的每一个参数。
+
+另外，arguments对象可以与命名参数一起使用。
+比如:
+```
+funciton doAdd(num1,num2){
+	if(arguments.length==1){
+	alert(num1+10);
+}
+	if(arguments.length==2){
+	alert(argument[0]+num2);
+}
+}
+```
+关于arguments的行为，还有一个点，他的值永远对应命名参数保持同步。
+命名参数不会改变arguments中对应的值。
 
 
+## 没有重载
+>P66 <br>
 
+如果在ECMAS中定义了两个名字的函数，则名字只属于后面定义的函数。
 
+---
+
+# 第四章 变量、作用域和内存问题
 
 
 
